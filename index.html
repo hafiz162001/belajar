@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AptitudePro - Platform Evaluasi Kelemahan & Latihan Terarah CPNS & TOEFL</title>
+  <meta name="description" content="Aplikasi persiapan CAT CPNS (TWK, TIU, TKP) dan TOEFL ITP dengan deteksi otomatis kelemahan kritis, simulasi ujian BKN, dan drill adaptif berbasis AI.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Ambient Light Orbs -->
+  <div class="bg-ambient-orb bg-orb-1" aria-hidden="true"></div>
+  <div class="bg-ambient-orb bg-orb-2" aria-hidden="true"></div>
+
+  <div class="app-container">
+    <!-- Navbar Header -->
+    <header class="navbar" role="banner">
+      <div class="brand" id="brand-logo" onclick="window.AptitudeApp.switchView('dashboard')">
+        <div class="brand-icon">A+</div>
+        <div class="brand-text">
+          <h1>AptitudePro</h1>
+          <p>CPNS SKD & TOEFL Mastery Suite</p>
+        </div>
+      </div>
+
+      <nav class="nav-links" aria-label="Navigasi Utama">
+        <button class="nav-btn active" data-view="dashboard" id="nav-btn-dashboard">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Dashboard
+        </button>
+        <button class="nav-btn" data-view="exams" id="nav-btn-exams">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Simulasi Ujian
+        </button>
+        <button class="nav-btn" data-view="drill" id="nav-btn-drill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          Drill Terarah
+        </button>
+        <button class="nav-btn" data-view="mistakes" id="nav-btn-mistakes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+          Bank Soal Salah
+        </button>
+        <button class="nav-btn" data-view="materials" id="nav-btn-materials">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+          Klinik Materi
+        </button>
+      </nav>
+
+      <div class="nav-tools">
+        <button class="icon-btn" id="theme-toggle-btn" title="Ganti Tema (Gelap / Terang)" aria-label="Toggle tema">
+          <span id="theme-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </span>
+        </button>
+        <button class="icon-btn" id="btn-reset-data" title="Reset Semua Riwayat & Mulai Ulang" aria-label="Reset Data">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="app-main-content">
+      <!-- ========================================================== -->
+      <!-- VIEW 1: DASHBOARD & EVALUASI KELEMAHAN                     -->
+      <!-- ========================================================== -->
+      <section id="dashboard-view" class="view-panel" style="display: block;">
+        <!-- Alert Banner Kelemahan Kritis -->
+        <div class="weakness-alert-banner" id="weakness-alert-banner" role="alert">
+          <div class="weakness-banner-content">
+            <div class="alert-icon-pulse" aria-hidden="true">⚠️</div>
+            <div class="alert-text">
+              <h3>Deteksi Kelemahan Kritis Teridentifikasi</h3>
+              <p id="alert-weakness-text">Menganalisis hasil tes Anda...</p>
+            </div>
+          </div>
+          <button class="btn-drill-now" id="btn-drill-banner" onclick="window.AptitudeApp.startAdaptiveDrill()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            Tingkatkan Kelemahan Sekarang
+          </button>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="dashboard-grid">
+          <div class="metric-card emerald">
+            <div class="metric-header">
+              <span class="metric-label">Prediksi SKD CPNS</span>
+              <div class="metric-icon">🏛️</div>
+            </div>
+            <div class="metric-value" id="metric-cpns-val">-</div>
+            <div class="metric-footer">
+              <span class="badge-tag pass" id="metric-cpns-badge">Target Passing Grade</span>
+            </div>
+          </div>
+
+          <div class="metric-card cyan">
+            <div class="metric-header">
+              <span class="metric-label">Prediksi Skor TOEFL</span>
+              <div class="metric-icon">🌐</div>
+            </div>
+            <div class="metric-value" id="metric-toefl-val">-</div>
+            <div class="metric-footer">
+              <span class="badge-tag pass" id="metric-toefl-badge">Skala 310 - 677</span>
+            </div>
+          </div>
+
+          <div class="metric-card amber">
+            <div class="metric-header">
+              <span class="metric-label">Akurasi Rata-rata</span>
+              <div class="metric-icon">🎯</div>
+            </div>
+            <div class="metric-value" id="metric-acc-val">0%</div>
+            <div class="metric-footer">
+              <span>Dari seluruh sesi latihan</span>
+            </div>
+          </div>
+
+          <div class="metric-card rose">
+            <div class="metric-header">
+              <span class="metric-label">Bank Soal Salah</span>
+              <div class="metric-icon">❌</div>
+            </div>
+            <div class="metric-value" id="metric-mistakes-val">0</div>
+            <div class="metric-footer">
+              <span>Soal perlu perbaikan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evaluasi Kelemahan Subkategori & Matriks Performa -->
+        <div class="two-col-layout">
+          <!-- Kolom Kiri: Radar Subkategori -->
+          <div class="glass-panel">
+            <div class="section-title-wrap">
+              <div>
+                <h2 class="section-title">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+                  Evaluasi Subkategori & Tingkat Penguasaan
+                </h2>
+                <p class="section-subtitle">Sistem memetakan akurasi setiap subtes untuk menentukan area prioritas belajar.</p>
+              </div>
+            </div>
+            <div class="weakness-list" id="subcat-weakness-list">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+
+          <!-- Kolom Kanan: Performa Per Kategori Utama -->
+          <div class="glass-panel">
+            <div class="section-title-wrap">
+              <div>
+                <h2 class="section-title">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><pie-chart><circle cx="12" cy="12" r="10"></circle><path d="M12 2a10 10 0 0 1 10 10H12V2z"></path></pie-chart></svg>
+                  Ringkasan Kategori
+                </h2>
+                <p class="section-subtitle">Akurasi per bidang ujian CPNS & TOEFL.</p>
+              </div>
+            </div>
+            <div class="cat-breakdown-grid" id="category-gauges-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 2: SIMULASI UJIAN (CAT CPNS & TOEFL ITP)              -->
+      <!-- ========================================================== -->
+      <section id="exams-view" class="view-panel" style="display: none;">
+        <div class="section-title-wrap" style="margin-bottom: 24px;">
+          <div>
+            <h2 class="section-title">Pilih Mode Simulasi Ujian</h2>
+            <p class="section-subtitle">Uji kemampuan Anda dalam kondisi ujian sesungguhnya dengan batas waktu ketat.</p>
+          </div>
+        </div>
+
+        <div class="exam-modes-grid">
+          <!-- Card CAT SKD CPNS -->
+          <div class="exam-card">
+            <span class="exam-card-badge badge-cpns">Standar BKN</span>
+            <div class="exam-icon">🏛️</div>
+            <h3>Simulasi SKD CPNS Penuh</h3>
+            <p>Mencakup TWK, TIU, dan TKP dengan aturan bobot nilai resmi BKN. Dirancang untuk menguji ketahanan dan kecepatan Anda.</p>
+            <div class="exam-meta-pills">
+              <span class="meta-pill">⏱️ 100 Menit</span>
+              <span class="meta-pill">📊 TWK 65 • TIU 80 • TKP 166</span>
+              <span class="meta-pill">📝 Skor 1-5 TKP</span>
+            </div>
+            <button class="btn-start-exam btn-start-exam-card" data-exam-type="CPNS">
+              Mulai Ujian CAT CPNS
+            </button>
+          </div>
+
+          <!-- Card TOEFL ITP Simulation -->
+          <div class="exam-card">
+            <span class="exam-card-badge badge-toefl">ITP Standard</span>
+            <div class="exam-icon">🌐</div>
+            <h3>Simulasi TOEFL ITP Test</h3>
+            <p>Menguji Listening Comprehension (dengan audio simulator), Structure & Written Expression, dan Reading Comprehension.</p>
+            <div class="exam-meta-pills">
+              <span class="meta-pill">⏱️ 60 Menit</span>
+              <span class="meta-pill">🎧 Audio Dialogues</span>
+              <span class="meta-pill">📈 Konversi Skor 310-677</span>
+            </div>
+            <button class="btn-start-exam btn-start-exam-card" data-exam-type="TOEFL">
+              Mulai Ujian TOEFL
+            </button>
+          </div>
+
+          <!-- Card Quick Diagnostic -->
+          <div class="exam-card">
+            <span class="exam-card-badge badge-adaptive">Kilat</span>
+            <div class="exam-icon">⚡</div>
+            <h3>Tes Diagnostik Cepat</h3>
+            <p>10 Soal campuran CPNS dan TOEFL untuk mendeteksi kelemahan awal Anda secara instan dalam 15 menit.</p>
+            <div class="exam-meta-pills">
+              <span class="meta-pill">⏱️ 15 Menit</span>
+              <span class="meta-pill">🎯 Pemetaan Kelemahan</span>
+              <span class="meta-pill">🚀 Rekomendasi Instan</span>
+            </div>
+            <button class="btn-start-exam btn-start-exam-card" data-exam-type="DIAGNOSTIC">
+              Mulai Diagnostik
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 3: DRILL TERARAH (TINGKATKAN KELEMAHAN)               -->
+      <!-- ========================================================== -->
+      <section id="drill-view" class="view-panel" style="display: none;">
+        <div class="section-title-wrap" style="margin-bottom: 24px;">
+          <div>
+            <h2 class="section-title">Pusat Peningkatan Kelemahan Terarah</h2>
+            <p class="section-subtitle">Latihan adaptif berbasis AI yang otomatis memilih soal dari subtopik yang paling sering Anda jawab salah.</p>
+          </div>
+        </div>
+
+        <div class="glass-panel" style="margin-bottom: 28px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+            <div>
+              <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px;">Smart Drill Generator</h3>
+              <p style="font-size: 0.88rem; color: var(--text-secondary);">Secara otomatis meramu 10 soal dari subkategori kritis Anda + mode pembahasan langsung (instant feedback).</p>
+            </div>
+            <button class="btn-drill-now" onclick="window.AptitudeApp.startAdaptiveDrill()">
+              Mulai Smart Drill Adaptif
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-panel">
+          <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 16px;">Rekomendasi Drill Berdasarkan Analisis Sistem:</h3>
+          <div id="drill-recommendations-list">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 4: BANK SOAL SALAH (MISTAKE VAULT)                    -->
+      <!-- ========================================================== -->
+      <section id="mistakes-view" class="view-panel" style="display: none;">
+        <div class="section-title-wrap" style="margin-bottom: 24px;">
+          <div>
+            <h2 class="section-title">Bank Soal Salah & Catatan Evaluasi</h2>
+            <p class="section-subtitle">Daftar semua soal yang pernah Anda jawab keliru. Uji ulang sampai Anda menguasainya 100%!</p>
+          </div>
+          <span class="badge-tag fail" id="mistakes-count-badge">0 Soal</span>
+        </div>
+
+        <div id="mistakes-items-container">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 5: KLINIK RINGKASAN MATERI (CHEATSHEETS)              -->
+      <!-- ========================================================== -->
+      <section id="materials-view" class="view-panel" style="display: none;">
+        <div class="section-title-wrap" style="margin-bottom: 24px;">
+          <div>
+            <h2 class="section-title">Klinik Ringkasan Materi & Trik Kilat</h2>
+            <p class="section-subtitle">Rumus cepat, kaidah silogisme, trik membedakan Sila Pancasila, dan aturan emas grammar TOEFL.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: var(--accent-primary);">Materi SKD CPNS (TWK, TIU, TKP)</h3>
+        <div class="materials-grid" id="materials-cpns-grid">
+          <!-- Rendered via JS -->
+        </div>
+
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: var(--accent-cyan); margin-top: 16px;">Materi TOEFL ITP (Structure, Listening, Reading)</h3>
+        <div class="materials-grid" id="materials-toefl-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 6: QUIZ ACTIVE / CAT SIMULATION SCREEN                -->
+      <!-- ========================================================== -->
+      <section id="quiz-active-view" class="quiz-active-view">
+        <div class="quiz-top-bar">
+          <div class="quiz-title-badge">
+            <span class="cat-pill" id="quiz-session-title">Simulasi CAT CPNS</span>
+          </div>
+
+          <div class="timer-box" id="quiz-timer-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span id="quiz-timer-display">100:00</span>
+          </div>
+
+          <button class="btn-finish-quiz" id="btn-finish-quiz" onclick="window.AptitudeApp.finishExamSession()">
+            Selesaikan Ujian
+          </button>
+        </div>
+
+        <div class="quiz-layout">
+          <!-- Area Soal Utama -->
+          <div class="question-card">
+            <div class="question-header">
+              <span class="q-number-pill" id="q-number-pill">Soal 1 dari 10</span>
+              <span class="q-subtopic-tag" id="q-subtopic-tag">TWK • Pancasila</span>
+            </div>
+
+            <!-- Audio Player Container jika TOEFL Listening -->
+            <div id="audio-player-container" style="display: none;"></div>
+
+            <!-- Reading Passage jika ada -->
+            <div id="passage-container" style="display: none;"></div>
+
+            <!-- Teks Pertanyaan -->
+            <div class="question-text" id="question-text-el">
+              Memuat soal...
+            </div>
+
+            <!-- Pilihan Jawaban -->
+            <div class="options-list" id="options-list-container">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Instant Feedback Card (Hanya muncul di mode Drill) -->
+            <div id="instant-feedback-container" style="display: none;"></div>
+
+            <!-- Tombol Navigasi Bawah -->
+            <div class="quiz-actions-footer">
+              <button class="btn-secondary" id="btn-prev-question" onclick="window.AptitudeApp.navigateQuestion(-1)">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Sebelumnya
+              </button>
+              <button class="btn-primary" id="btn-next-question" onclick="window.AptitudeApp.navigateQuestion(1)">
+                Selanjutnya
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Sidebar CAT Grid Navigasi -->
+          <aside class="cat-nav-sidebar" aria-label="Navigasi Lembar Jawaban">
+            <h3 class="sidebar-title">Daftar Nomor Soal</h3>
+            <div class="q-grid-buttons" id="cat-grid-buttons">
+              <!-- Rendered via JS -->
+            </div>
+            <div class="q-legend">
+              <div class="legend-item">
+                <div class="legend-dot current"></div>
+                <span>Soal Sedang Aktif</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot answered"></div>
+                <span>Sudah Dijawab</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-dot unanswered"></div>
+                <span>Belum Dijawab</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ========================================================== -->
+      <!-- VIEW 7: HASIL UJIAN & EVALUASI PREDIKSI                    -->
+      <!-- ========================================================== -->
+      <section id="result-screen-view" class="result-screen-view">
+        <div class="result-card">
+          <div class="result-hero-badge pass" id="result-hero-badge">HASIL EVALUASI</div>
+          <h2 class="result-title" id="result-title-el">Skor Anda: 0</h2>
+          <p class="result-subtitle" id="result-subtitle-el">Evaluasi passing grade dan rekomendasi latihan:</p>
+
+          <div class="result-scores-grid" id="result-scores-container">
+            <!-- Rendered via JS -->
+          </div>
+
+          <!-- Weakness Alert inside result -->
+          <div class="result-weakness-box" id="result-weakness-box" style="display: none;">
+            <!-- Rendered via JS -->
+          </div>
+
+          <div class="result-actions">
+            <button class="btn-secondary" id="btn-result-back-dashboard" onclick="window.AptitudeApp.switchView('dashboard')">
+              Kembali ke Dashboard
+            </button>
+            <button class="btn-drill-now" id="btn-result-direct-drill" onclick="window.AptitudeApp.startAdaptiveDrill()">
+              ⚡ Langsung Drill Kelemahan Saya
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Detail Materi -->
+  <div class="modal-overlay" id="material-modal" role="dialog" aria-modal="true" aria-labelledby="modal-material-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div>
+          <span class="cat-pill" id="modal-material-cat">TIU</span>
+          <h2 id="modal-material-title" style="margin-top: 8px;">Judul Materi</h2>
+        </div>
+        <button class="icon-btn" id="modal-close-btn" aria-label="Tutup Modal">✕</button>
+      </div>
+      <div class="modal-content" id="modal-material-content">
+        <!-- Markdown rendered into HTML -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Main ES Module Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
