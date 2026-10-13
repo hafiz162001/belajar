@@ -170,7 +170,9 @@ export const TOEFL_QUESTIONS = [
     id: "toefl-read-02",
     type: "Reading",
     subcategory: "Vocabulary in Context",
-    passageReference: "toefl-read-01",
+    passage: `Geothermal energy originates from the internal heat of the Earth. Beneath the continental crust, radioactive decay of minerals alongside primordial heat from planetary formation continuously warms surrounding rock strata and groundwater reservoirs. When subterranean water comes into contact with these scorching hydrothermal zones, it generates immense pressures of superheated steam. 
+
+    Engineers harness this subterranean phenomenon by drilling deep production wells, piping the high-pressure steam directly to turbines that generate clean electricity. Because geothermal power plants emit minuscule greenhouse emissions compared to fossil fuel alternatives and maintain an uninterrupted baseload power output irrespective of weather conditions, they represent one of the most reliable sustainable energy sources available today.`,
     question: "The word 'minuscule' in paragraph 2 is closest in meaning to which of the following?",
     options: [
       { text: "Tiny or negligible", isCorrect: true },
@@ -180,5 +182,70 @@ export const TOEFL_QUESTIONS = [
     ],
     explanation: "Kata 'minuscule' bermakna sangat kecil atau dapat diabaikan (extremely small / tiny). Dalam teks: 'emit minuscule greenhouse emissions compared to fossil fuel alternatives' berarti emisi yang dikeluarkan sangat amat sedikit dibandingkan bahan bakar fosil.",
     tips: "Trik Vocabulary in Context: Substitusikan pilihan kata ke dalam kalimat asli untuk mengecek kelogisan maknanya dalam konteks wacana."
+  },
+  {
+    id: "toefl-list-04",
+    type: "Listening",
+    subcategory: "Campus Life & Conversation (Part B)",
+    speakerDialogue: [
+      { speaker: "Man", text: "Excuse me, Professor Evans. I wanted to ask about the prerequisite for your Advanced Econometrics seminar next semester." },
+      { speaker: "Woman", text: "Normally, students must have completed Intermediate Statistics with at least a B. However, if you've already taken Multivariate Calculus and linear algebra, I might consider signing an override waiver for you." },
+      { speaker: "Man", text: "I actually finished both math courses last spring with straight A's!" },
+      { speaker: "Narrator", text: "What will the professor most likely do for the student?" }
+    ],
+    question: "What will Professor Evans most likely do?",
+    options: [
+      { text: "Require the student to retake Intermediate Statistics", isCorrect: false },
+      { text: "Grant permission for the student to register for the seminar", isCorrect: true },
+      { text: "Advise the student to drop all math courses", isCorrect: false },
+      { text: "Postpone the econometrics seminar until the following year", isCorrect: false }
+    ],
+    explanation: "The professor offered to consider signing an override waiver if the student had already completed Multivariate Calculus and linear algebra. Since the student confirmed completing both with straight A's, the professor will most likely grant the permission/waiver to enroll.",
+    tips: "Part B Listening: Perhatikan kata kunci persetujuan bersyarat ('if you've already... I might consider signing an override waiver')."
+  },
+  {
+    id: "toefl-struct-06",
+    type: "Structure",
+    subcategory: "Conditional Inversion (Subjunctive)",
+    question: "_______ the warnings issued by atmospheric scientists, the municipal council would have evacuated the coastal district prior to the typhoon.",
+    options: [
+      { text: "Had the officials heeded", isCorrect: true },
+      { text: "If the officials heeded", isCorrect: false },
+      { text: "Have the officials heeded", isCorrect: false },
+      { text: "The officials had heeded", isCorrect: false }
+    ],
+    explanation: "Ini adalah bentuk Inverted Conditional Type 3 (Past Unreal Conditional). Bentuk standar dengan 'if': 'If the officials had heeded...'. Ketika kata 'if' dihilangkan, posisi kata kerja bantu 'Had' dibalik ke depan subjek: 'Had the officials heeded...'.",
+    tips: "Rumus Inversi Pengandaian (Conditional Inversion):\n- Type 3: Had + S + V3, S + would have + V3\n- Type 2: Were + S + to V1 / adj, S + would + V1\n- Type 1: Should + S + V1, S + will + V1."
+  },
+  {
+    id: "toefl-struct-07",
+    type: "Structure",
+    subcategory: "Causative Verbs",
+    question: "The director had the senior software engineer _______ the vulnerability patch before releasing the application to the public.",
+    options: [
+      { text: "to inspect", isCorrect: false },
+      { text: "inspect", isCorrect: true },
+      { text: "inspected", isCorrect: false },
+      { text: "inspecting", isCorrect: false }
+    ],
+    explanation: "Causative Verb 'have' dalam kalimat aktif: Subject + have/had + person (agent) + bare infinitive (V1 tanpa 'to'). Maka: 'had the senior software engineer inspect...'. Bentuk 'to inspect' hanya dipakai pada kata kerja 'get' (got someone TO do something).",
+    tips: "Rumus Kunci Causative:\n1. Have someone DO something (V1)\n2. Get someone TO DO something (to + V1)\n3. Make someone DO something (V1)\n4. Have/Get something DONE (V3 pasif)."
+  },
+  {
+    id: "toefl-read-03",
+    type: "Reading",
+    subcategory: "Inference & Scientific Analysis",
+    passage: `Phytoplankton constitute the fundamental foundation of marine trophic cascades, accounting for approximately half of the photosynthetic activity on Earth despite comprising less than one percent of global photosynthetic biomass. These microscopic unicellular organisms drift in the sunlit euphotic zone of oceans, converting carbon dioxide and dissolved nutrients into organic compounds through solar energy. 
+
+    Recent satellite observations reveal alarming decadal declines in phytoplankton concentrations across subtropical gyres. Oceanographers attribute this trend to intensified ocean thermal stratification: as surface sea temperatures escalate due to climatic shifts, the warmer, less dense upper layer resists mixing with cold, nutrient-rich deeper waters. Deprived of essential upwelling nutrients such as nitrates and phosphates, phytoplankton reproduction plummets, triggering ripple effects through marine food webs and diminishing the ocean's capacity to sequester atmospheric carbon.`,
+    question: "It can be inferred from the second paragraph that warmer surface waters primarily harm phytoplankton by...",
+    options: [
+      { text: "Preventing vital deep-sea nutrients from rising to the surface", isCorrect: true },
+      { text: "Directly destroying the cell membranes of microscopic organisms", isCorrect: false },
+      { text: "Blocking solar radiation from penetrating the euphotic zone", isCorrect: false },
+      { text: "Attracting apex predators into subtropical ocean gyres", isCorrect: false }
+    ],
+    explanation: "Paragraf kedua menjelaskan bahwa air permukaan yang semakin hangat menyebabkan 'thermal stratification' sehingga lapisan atas tidak bercampur dengan air dingin di bawahnya ('resists mixing with cold, nutrient-rich deeper waters'). Akibatnya, fitoplankton kekurangan zat hara ('Deprived of essential upwelling nutrients such as nitrates and phosphates'). Jadi, air hangat merugikan fitoplankton terutama karena menghalangi naiknya nutrisi penting dari kedalaman laut.",
+    tips: "Trik Pertanyaan Inferensi ('inferred'): Cari hubungan sebab-akibat langsung dalam paragraf. Jangan memilih opsi yang menyebut kerusakan sel langsung jika teks hanya menyebut efek stratifikasi dan ketiadaan nutrisi."
   }
 ];

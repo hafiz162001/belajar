@@ -251,5 +251,95 @@ export const CPNS_QUESTIONS = [
     ],
     explanation: "Poin 5 menunjukkan komitmen kuat pada Pancasila dan NKRI, keberanian bertindak menegakkan toleransi secara proporsional dan santun, serta pemahaman alur penanganan institusional.",
     tips: "Kunci TKP Anti Radikalisme: Tegas pada nilai kebangsaan, cegah polarisasi dan intoleransi, hindari amarah frontal, tempuh pembinaan yang tertib."
+  },
+  {
+    id: "cpns-twk-07",
+    type: "TWK",
+    subcategory: "Sejarah & Pilar Kebangsaan",
+    question: "Perumusan dasar negara Republik Indonesia mengalami dinamika penting saat sidang BPUPKI pertama. Perubahan sila pertama pada Piagam Jakarta dari 'Ketuhanan dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya' menjadi 'Ketuhanan Yang Maha Esa' diputuskan pada sidang PPKI tanggal 18 Agustus 1945 atas usulan tokoh dari kawasan timur yang dimediasi oleh...",
+    options: [
+      { text: "Soepomo", isCorrect: false },
+      { text: "Mohammad Hatta", isCorrect: true },
+      { text: "Achmad Soebardjo", isCorrect: false },
+      { text: "Sutan Sjahrir", isCorrect: false },
+      { text: "Ki Hadjar Dewantara", isCorrect: false }
+    ],
+    explanation: "Mohammad Hatta menerima aspirasi dari tokoh-tokoh Indonesia bagian timur (melalui opsir Kaigun Jepang) yang merasa keberatan dengan klausul Piagam Jakarta. Demi menjaga persatuan dan keutuhan bangsa yang baru saja merdeka, Hatta mengadakan pertemuan kilat dengan tokoh Islam (Ki Bagus Hadikusumo, Wahid Hasyim, Kasman Singodimedjo, Teuku Moh. Hasan) dan menyepakati rumusan 'Ketuhanan Yang Maha Esa'.",
+    tips: "Sejarah Konstitusi: 18 Agustus 1945 PPKI menetapkan: (1) Mengesahkan UUD 1945, (2) Memilih Presiden Soekarno & Wapres Hatta, (3) Membentuk Komite Nasional Indonesia Pusat (KNIP)."
+  },
+  {
+    id: "cpns-twk-08",
+    type: "TWK",
+    subcategory: "Konstitusi & Tata Negara",
+    question: "Berdasarkan Undang-Undang Nomor 12 Tahun 2011 tentang Pembentukan Peraturan Perundang-undangan (jo. UU No. 13 Tahun 2022), hierarki peraturan perundang-undangan yang menempati urutan tepat di bawah TAP MPR adalah...",
+    options: [
+      { text: "Peraturan Presiden (Perpres)", isCorrect: false },
+      { text: "Undang-Undang / Peraturan Pemerintah Pengganti Undang-Undang (UU/Perppu)", isCorrect: true },
+      { text: "Peraturan Pemerintah (PP)", isCorrect: false },
+      { text: "Peraturan Daerah Provinsi (Perda Provinsi)", isCorrect: false },
+      { text: "Instruksi Presiden (Inpres)", isCorrect: false }
+    ],
+    explanation: "Urutan hierarki Pasal 7 ayat (1) UU 12/2011:\n1. UUD NRI Tahun 1945\n2. Ketetapan MPR\n3. Undang-Undang / Perppu\n4. Peraturan Pemerintah (PP)\n5. Peraturan Presiden (Perpres)\n6. Perda Provinsi\n7. Perda Kabupaten/Kota.",
+    tips: "Jembatan Keledai Hierarki Hukum: U-TAP-U-P-P-P-P (UUD -> TAP MPR -> UU/Perppu -> PP -> Perpres -> Perda Prov -> Perda Kab/Kota)."
+  },
+  {
+    id: "cpns-tiu-07",
+    type: "TIU",
+    subcategory: "Penalaran Analitis",
+    question: "Enam orang pegawai (A, B, C, D, E, dan F) duduk mengelilingi meja bundar untuk rapat koordinasi:\n1. A duduk tepat berhadapan dengan D.\n2. B duduk di sebelah kanan A.\n3. C tidak boleh duduk bersebelahan dengan D maupun B.\n4. E duduk di antara D dan C.\nSiapakah yang duduk tepat di sebelah kiri A?",
+    options: [
+      { text: "C", isCorrect: false },
+      { text: "D", isCorrect: false },
+      { text: "F", isCorrect: true },
+      { text: "E", isCorrect: false },
+      { text: "B", isCorrect: false }
+    ],
+    explanation: "Posisi 6 kursi melingkar (arah jarum jam): Jika A di posisi 12, maka tepat berhadapan adalah D di posisi 6. B di sebelah kanan A (posisi 2). E di antara D dan C (karena C tidak boleh dekat D dan B, C di posisi 8, maka E di posisi 7). Posisi yang tersisa untuk sebelah kiri A (posisi 10) adalah F.",
+    tips: "Trik Meja Bundar: Gambar lingkaran bernomor 1-6. Tarik garis diagonal untuk yang 'berhadapan'. Tempatkan posisi pasti terlebih dahulu."
+  },
+  {
+    id: "cpns-tiu-08",
+    type: "TIU",
+    subcategory: "Kecepatan & Jarak Waktu",
+    question: "Kota P dan Q berjarak 210 km. Mobil X berangkat dari kota P menuju Q pukul 08.00 dengan kecepatan rata-rata 60 km/jam. Pada saat yang sama, mobil Y berangkat dari kota Q menuju P melalui jalur yang sama dengan kecepatan rata-rata 80 km/jam. Pada pukul berapa kedua mobil tersebut akan berpapasan?",
+    options: [
+      { text: "09.15", isCorrect: false },
+      { text: "09.30", isCorrect: true },
+      { text: "09.45", isCorrect: false },
+      { text: "10.00", isCorrect: false },
+      { text: "10.15", isCorrect: false }
+    ],
+    explanation: "Rumus Berpapasan (Waktu berangkat sama):\nWaktu tempuh = Jarak Total / (Kecepatan 1 + Kecepatan 2)\nt = 210 / (60 + 80) = 210 / 140 = 1,5 jam (1 jam 30 menit).\nWaktu berpapasan = 08.00 + 1 jam 30 menit = 09.30.",
+    tips: "Rumus Cepat Berpapasan (arah berlawanan): t = S / (V1 + V2). Jika menyusul (searah): t = S / (Vcepat - Vlambat)."
+  },
+  {
+    id: "cpns-tkp-05",
+    type: "TKP",
+    subcategory: "Profesionalisme & Integritas Kerja",
+    question: "Menjelang akhir tahun anggaran, beban kerja unit Anda meningkat tiga kali lipat dengan tenggat waktu sangat ketat. Di saat bersamaan, pimpinan unit menugaskan Anda merapikan audit laporan keuangan yang sebelumnya dikerjakan oleh rekan yang sedang cuti sakit. Sikap Anda...",
+    options: [
+      { text: "Menolak tugas tambahan dengan alasan tugas pokok sendiri sudah melebihi kapasitas jam kerja", score: 1 },
+      { text: "Mengerjakan tugas pokok saja, dan membiarkan laporan audit tersebut terbengkalai sampai rekan yang cuti kembali", score: 2 },
+      { text: "Menerima tugas tersebut dengan bersungut-sungut dan meminta rekan lain patungan menyelesaikan", score: 3 },
+      { text: "Menerima tugas, membuat skala prioritas harian yang terstruktur, dan jika mendesak bersedia bekerja lembur agar target instansi tercapai tuntas", score: 5 },
+      { text: "Mengerjakan tugas audit secara asal-asalan yang penting ada bukti fisik laporan selesai", score: 4 }
+    ],
+    explanation: "Poin 5 menunjukkan dedikasi tinggi, kemampuan manajemen waktu (skala prioritas), orientasi hasil kerja bermutu, dan loyalitas terhadap kelancaran institusi.",
+    tips: "Kunci TKP Profesionalisme: Tuntas, akuntabel, pantang menyerah menghadapi tekanan (resiliensi), buat skala prioritas, hindari mengeluh."
+  },
+  {
+    id: "cpns-tkp-06",
+    type: "TKP",
+    subcategory: "Sosial Budaya & Adaptasi",
+    question: "Anda dipindahtugaskan ke daerah pedalaman di luar pulau asal Anda. Masyarakat setempat memiliki tradisi musyawarah adat mingguan yang cukup memakan waktu namun sangat dihormati oleh para tetua desa. Sebagai ASN baru, sikap Anda adalah...",
+    options: [
+      { text: "Menghindari perkumpulan warga karena merasa budaya tersebut tidak relevan dengan tugas administrasi Anda", score: 1 },
+      { text: "Hanya bergaul dengan sesama rekan kerja yang berasal dari satu daerah asal", score: 2 },
+      { text: "Hadir sesekali saja jika dipaksa oleh kepala kantor", score: 3 },
+      { text: "Menyampaikan kritik di depan warga bahwa tradisi tersebut kurang efisien dari sisi waktu", score: 4 },
+      { text: "Menghadiri musyawarah dengan rendah hati, menyimak adat istiadat setempat, serta membangun komunikasi yang bersahabat dengan tokoh masyarakat", score: 5 }
+    ],
+    explanation: "Poin 5 mencerminkan kepekaan sosial budaya, toleransi, penghormatan terhadap kearifan lokal, serta kemampuan adaptasi tinggi di lingkungan baru.",
+    tips: "Kunci TKP Sosial Budaya: Di mana bumi dipijak, di situ langit dijunjung. Bersikap inklusif, menghargai keberagaman, dan proaktif menjalin hubungan sosial yang harmonis."
   }
 ];
