@@ -234,7 +234,7 @@ export const Analytics = {
     const allQuestions = [...CPNS_QUESTIONS, ...TOEFL_QUESTIONS];
 
     allQuestions.forEach(q => {
-      if (targetCategory && q.type !== targetCategory && !this.isCategoryMatch(targetCategory, q.type)) {
+      if (targetCategory && !this.isCategoryMatch(targetCategory, q.type, q.subcategory)) {
         return;
       }
 
@@ -255,22 +255,27 @@ export const Analytics = {
         priorityScore += 5;
       }
 
-      if (priorityScore > 0) {
-        candidateQuestions.push({ question: q, priority: priorityScore });
-      }
+      candidateQuestions.push({ question: q, priority: Math.max(1, priorityScore) });
     });
 
     // Urutkan berdasar prioritas tertinggi
     candidateQuestions.sort((a, b) => b.priority - a.priority);
 
-    // Jika kandidat sedikit, sertakan soal acak dari kategori yang relevan
+    // Jika kandidat sedikit, sertakan soal dari pool yang relevan atau acak
     if (candidateQuestions.length < 5) {
       allQuestions.forEach(q => {
         if (!candidateQuestions.find(c => c.question.id === q.id)) {
-          if (!targetCategory || q.type === targetCategory || this.isCategoryMatch(targetCategory, q.type)) {
+          if (!targetCategory || this.isCategoryMatch(targetCategory, q.type, q.subcategory)) {
             candidateQuestions.push({ question: q, priority: 1 });
           }
         }
+      });
+    }
+
+    // Fallback keamanan jika target filter tidak memiliki soal sama sekali
+    if (candidateQuestions.length === 0) {
+      allQuestions.slice(0, 10).forEach(q => {
+        candidateQuestions.push({ question: q, priority: 1 });
       });
     }
 
@@ -278,9 +283,11 @@ export const Analytics = {
     return candidateQuestions.slice(0, 10).map(c => c.question);
   },
 
-  isCategoryMatch(filter, qType) {
+  isCategoryMatch(filter, qType, subcategory) {
+    if (!filter) return true;
     if (filter === "CPNS") return ["TWK", "TIU", "TKP"].includes(qType);
     if (filter === "TOEFL") return ["Listening", "Structure", "Reading"].includes(qType);
-    return filter === qType;
+    if (subcategory && subcategory.toLowerCase() === filter.toLowerCase()) return true;
+    return filter.toLowerCase() === qType.toLowerCase();
   }
 };

@@ -11,342 +11,212 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body>
 
   <!-- ========================================================== -->
-  <!-- W3 TOPNAV BAR (Sticky Header & Secondary Subnav)           -->
+  <!-- SIMPLIFIED HEADER (Hanya 4 Menu Utama & Aksi Cepat)         -->
   <!-- ========================================================== -->
-  <div class="w3-topnav-fixed">
-    <header class="w3-topnav" role="banner">
+  <header class="app-header" role="banner">
+    <div class="header-container">
       <!-- Logo Brand -->
-      <div class="w3-logo-wrap" onclick="window.AptitudeApp.switchView('dashboard')">
-        <span class="w3-logo-badge">W3</span>
-        <div class="w3-logo-title">Aptitude<span>Pro</span></div>
+      <div class="brand-logo" onclick="window.AptitudeApp.switchView('dashboard')">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--accent-primary);"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+        </div>
+        <div class="logo-text">
+          <div class="logo-title">Aptitude<strong>Pro</strong></div>
+          <div class="logo-sub">Fokus Belajar & Evaluasi</div>
+        </div>
       </div>
 
-      <!-- Topnav Links -->
-      <nav class="w3-topnav-links" aria-label="Top Navigation">
-        <a class="w3-topnav-link active" data-view="dashboard" id="topnav-dashboard">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-          Tutorials & Ref
-        </a>
-        <a class="w3-topnav-link" data-view="exams" id="topnav-exams">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-          Simulasi Ujian
-        </a>
-        <a class="w3-topnav-link" data-view="drill" id="topnav-drill">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          Exercises / Drill
-        </a>
-        <a class="w3-topnav-link" data-view="mistakes" id="topnav-mistakes">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-          Bank Soal Salah
-        </a>
-        <a class="w3-topnav-link" data-view="materials" id="topnav-materials">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-          Klinik Materi
-        </a>
+      <!-- Hanya 4 Menu Jelas & Mudah Dimengerti -->
+      <nav class="nav-menu" aria-label="Menu Utama">
+        <button class="nav-item active" data-view="dashboard" id="nav-dashboard" onclick="window.AptitudeApp && window.AptitudeApp.switchView('dashboard')">
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+          </span>
+          <span class="nav-label">Hari Ini & Kelemahan</span>
+        </button>
+        <button class="nav-item" data-view="exams" id="nav-exams" onclick="window.AptitudeApp && window.AptitudeApp.switchView('exams')">
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          </span>
+          <span class="nav-label">Simulasi Ujian</span>
+        </button>
+        <button class="nav-item" data-view="mistakes" id="nav-mistakes" onclick="window.AptitudeApp && window.AptitudeApp.switchView('mistakes')">
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+          </span>
+          <span class="nav-label">Bank Soal Salah</span>
+        </button>
+        <button class="nav-item" data-view="materials" id="nav-materials" onclick="window.AptitudeApp && window.AptitudeApp.switchView('materials')">
+          <span class="nav-icon">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.5 1.5 4.5 3 6h8c1.5-1.5 3-3.5 3-6a7 7 0 0 0-7-7z"></path></svg>
+          </span>
+          <span class="nav-label">Rumus Cepat</span>
+        </button>
       </nav>
 
-      <!-- Search Input -->
-      <div class="w3-topnav-search">
-        <input type="text" id="w3-global-search" placeholder="Search reference, rumus, materi..." autocomplete="off" />
-        <button class="w3-search-icon-btn" aria-label="Search" onclick="window.AptitudeApp.handleGlobalSearch()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-        </button>
-      </div>
-
       <!-- Action Buttons -->
-      <div class="w3-topnav-right">
-        <button class="w3-icon-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode" aria-label="Toggle Mode">
+      <div class="header-actions">
+        <button class="btn-icon" id="theme-toggle-btn" title="Ganti Mode Gelap/Terang" aria-label="Toggle Theme" onclick="window.AptitudeApp && window.AptitudeApp.toggleTheme()">
           <span id="theme-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
           </span>
         </button>
-        <button class="w3-icon-btn" id="btn-reset-data" title="Reset All Data" aria-label="Reset Data">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        <button class="btn-text-small" id="btn-reset-data" title="Reset Semua Progres" aria-label="Reset Data" onclick="window.AptitudeApp && window.AptitudeApp.resetData()">
+          🔄 Reset
         </button>
-        <button class="w3-btn-cta" onclick="window.AptitudeApp.startAdaptiveDrill()">
-          Try Drill »
-        </button>
-        <button class="w3-mobile-toggle-btn" id="w3-mobile-toggle" aria-label="Toggle Mobile Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        <button class="btn-header-cta" onclick="window.AptitudeApp && window.AptitudeApp.startAdaptiveDrill()">
+          ⚡ Latihan Cepat
         </button>
       </div>
-    </header>
-
-    <!-- Subnav (Signature W3 Dark Charcoal Sub-bar) -->
-    <div class="w3-subnav" aria-label="Sub Navigation">
-      <a class="w3-subnav-item highlight" onclick="window.AptitudeApp.switchView('dashboard')">HOME</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.startExam('CPNS')">CAT CPNS BKN</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.startExam('TOEFL')">TOEFL ITP TEST</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.startExam('DIAGNOSTIC')">DIAGNOSTIC TEST</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.switchView('drill')">ADAPTIVE DRILL</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.switchView('mistakes')">BANK SALAH</a>
-      <a class="w3-subnav-item" onclick="window.AptitudeApp.switchView('materials')">KLINIK RANGKUMAN</a>
     </div>
-  </div>
+  </header>
 
   <!-- ========================================================== -->
-  <!-- W3 WRAPPER: SIDENAV + MAIN CONTENT                         -->
+  <!-- MAIN CONTENT CONTAINER (Centered, Lapang, Tanpa Clutter)   -->
   <!-- ========================================================== -->
-  <div class="w3-wrapper">
-    <!-- Left Sidenav (Signature W3 Tree Menu) -->
-    <aside class="w3-sidenav" id="w3-sidenav" aria-label="Sidebar Reference Menu">
-      <div class="w3-sidenav-search-wrap">
-        <input type="text" id="filter-sidenav" placeholder="Filter Reference..." class="w3-sidenav-filter-input" autocomplete="off" />
-      </div>
+  <main class="main-wrapper" id="main-wrapper" role="main">
+    <div class="main-container">
 
-      <div class="w3-sidenav-scroll" id="sidenav-links-container">
-        <!-- Overview Group -->
-        <div class="w3-sidenav-section">
-          <div class="w3-sidenav-header">OVERVIEW</div>
-          <a class="w3-sidenav-link active" data-view="dashboard">Dashboard & Rekap</a>
-          <a class="w3-sidenav-link" data-action="diagnostic">Tes Diagnostik Cepat</a>
-          <a class="w3-sidenav-link" data-view="mistakes">Bank Soal Salah</a>
-        </div>
-
-        <!-- CPNS Group -->
-        <div class="w3-sidenav-section">
-          <div class="w3-sidenav-header">CPNS SKD REFERENCE</div>
-          <a class="w3-sidenav-link" data-view="materials" data-material="TWK">Panduan SKD BKN</a>
-          <a class="w3-sidenav-link" data-drill="Pancasila">TWK - Pancasila</a>
-          <a class="w3-sidenav-link" data-drill="UUD 1945">TWK - UUD 1945</a>
-          <a class="w3-sidenav-link" data-drill="Integritas">TWK - Integritas & Anti Korupsi</a>
-          <a class="w3-sidenav-link" data-drill="Sejarah & Pilar Kebangsaan">TWK - Pilar Kebangsaan</a>
-          <a class="w3-sidenav-link" data-drill="Bahasa Indonesia">TWK - Bahasa Indonesia</a>
-          <a class="w3-sidenav-link" data-drill="Deret Angka">TIU - Deret Angka</a>
-          <a class="w3-sidenav-link" data-drill="Silogisme">TIU - Silogisme & Logika</a>
-          <a class="w3-sidenav-link" data-drill="Soal Cerita & Aritmatika">TIU - Berhitung Cepat</a>
-          <a class="w3-sidenav-link" data-drill="Kemampuan Figural">TIU - Kemampuan Figural</a>
-          <a class="w3-sidenav-link" data-drill="Pelayanan Publik">TKP - Pelayanan Publik</a>
-          <a class="w3-sidenav-link" data-drill="Sosial Budaya & Adaptasi">TKP - Sosial Budaya</a>
-          <a class="w3-sidenav-link" data-drill="Teknologi Informasi & Komunikasi (TIK)">TKP - Teknologi Informasi (TIK)</a>
-        </div>
-
-        <!-- TOEFL Group -->
-        <div class="w3-sidenav-section">
-          <div class="w3-sidenav-header">TOEFL ITP REFERENCE</div>
-          <a class="w3-sidenav-link" data-view="materials" data-material="Structure">Panduan TOEFL ITP</a>
-          <a class="w3-sidenav-link" data-drill="Short Dialogue (Part A)">Listening - Short Dialogues</a>
-          <a class="w3-sidenav-link" data-drill="Idioms & Indirect Speech (Part A)">Listening - Idioms & Negatives</a>
-          <a class="w3-sidenav-link" data-drill="Subject-Verb Agreement">Structure - Subject-Verb Aggr.</a>
-          <a class="w3-sidenav-link" data-drill="Reduced Relative Clauses">Structure - Reduced Clauses</a>
-          <a class="w3-sidenav-link" data-drill="Inversion">Structure - Inversion & Patterns</a>
-          <a class="w3-sidenav-link" data-drill="Main Idea & Vocabulary">Reading - Main Idea</a>
-          <a class="w3-sidenav-link" data-drill="Vocabulary in Context">Reading - Vocab in Context</a>
-        </div>
-
-        <!-- Exercises & Quizzes Group -->
-        <div class="w3-sidenav-section">
-          <div class="w3-sidenav-header">EXERCISES & QUIZZES</div>
-          <a class="w3-sidenav-link" data-view="exams">Simulasi CAT CPNS (100m)</a>
-          <a class="w3-sidenav-link" data-view="exams">Simulasi TOEFL (60m)</a>
-          <a class="w3-sidenav-link" data-view="drill">Drill Terarah Adaptif AI</a>
-          <a class="w3-sidenav-link" data-view="materials">Klinik & Rangkuman Materi</a>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="w3-main" id="w3-main" role="main">
-      <div class="w3-main-container">
-
-        <!-- ========================================================== -->
-        <!-- VIEW 1: DASHBOARD / REFERENCE OVERVIEW                     -->
-        <!-- ========================================================== -->
-        <section id="dashboard-view" class="view-panel" style="display: block;">
-          <!-- Breadcrumbs -->
-          <div class="w3-breadcrumbs">
-            <a onclick="window.AptitudeApp.switchView('dashboard')">Home</a> / 
-            <a onclick="window.AptitudeApp.switchView('dashboard')">References</a> / 
-            <span>CPNS SKD & TOEFL ITP</span>
+      <!-- ========================================================== -->
+      <!-- VIEW 1: DASHBOARD (AKU HARI INI APA & KELEMAHAN SAYA)       -->
+      <!-- ========================================================== -->
+      <section id="dashboard-view" class="view-panel" style="display: block;">
+        
+        <!-- Header Sapaan & Tanggal Hari Ini -->
+        <div class="today-greeting-bar">
+          <div class="greeting-info">
+            <h1 class="greeting-title">Halo, Pejuang Ujian! 👋</h1>
+            <p class="greeting-subtitle" id="today-date-text">Memuat jadwal dan target belajar hari ini...</p>
           </div>
-
-          <!-- Top Pagination -->
-          <div class="w3-page-nav">
-            <button class="w3-btn w3-btn-grey" onclick="window.AptitudeApp.navigatePreviousView()">« Previous</button>
-            <button class="w3-btn w3-btn-green" onclick="window.AptitudeApp.navigateNextView()">Next »</button>
-          </div>
-
-          <h1 class="w3-page-title">CPNS SKD & TOEFL ITP Reference</h1>
-          <p class="w3-page-subtitle">
-            Kompilasi referensi materi terstruktur, deteksi otomatis kelemahan kritis, dan simulasi CAT resmi BKN & ETS dengan penjelasan interaktif.
-          </p>
-
-          <!-- W3 Info Panel: Kelemahan Kritis -->
-          <div class="w3-panel-info" id="weakness-alert-banner">
-            <div class="w3-panel-info-header">
-              <h3>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color: var(--status-critical);"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                Status Evaluasi Kelemahan Kritis:
-              </h3>
+          <div class="streak-badge-card" id="streak-badge-card">
+            <span class="streak-fire">🔥</span>
+            <div>
+              <div class="streak-count" id="user-streak-text">1 Hari Aktif</div>
+              <div class="streak-label">Konsistensi Belajar</div>
             </div>
-            <p id="alert-weakness-text">Menganalisis hasil tes dan riwayat pengerjaan Anda...</p>
-            <div class="w3-panel-info-action">
-              <button class="w3-btn w3-btn-green" onclick="window.AptitudeApp.startAdaptiveDrill()">
-                Tingkatkan Kelemahan Sekarang »
+          </div>
+        </div>
+
+        <!-- 1. AKU HARI INI APA? (Rencana & Misi Belajar Hari Ini) -->
+        <div class="section-box hero-today-box">
+          <div class="box-top-tag-row">
+            <span class="badge-tag today-tag">📅 RENCANA HARI INI</span>
+            <span class="today-time-estimate" id="today-time-est">⏱️ Waktu: ~10-15 Menit</span>
+          </div>
+
+          <div class="hero-today-body">
+            <h2 class="hero-mission-title" id="today-mission-title">
+              Misi Hari Ini: Selesaikan Target 10 Soal Fokus Kelemahan
+            </h2>
+            <p class="hero-mission-desc" id="today-mission-desc">
+              Sistem telah memilih 10 soal dari topik yang paling sering kamu keliru agar akurasimu segera naik.
+            </p>
+
+            <!-- Progress Misi Hari Ini -->
+            <div class="today-progress-card">
+              <div class="progress-label-row">
+                <span class="progress-heading">Progres Belajar Hari Ini:</span>
+                <span class="progress-val-text" id="today-progress-ratio">0 / 10 Soal</span>
+              </div>
+              <div class="progress-track-bar">
+                <div class="progress-fill-bar" id="today-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Tombol Aksi Utama -->
+            <div class="hero-cta-buttons">
+              <button class="btn-hero-primary" id="btn-start-today-mission" onclick="window.AptitudeApp.startTodayMission()">
+                🚀 Mulai Misi Hari Ini Sekarang »
+              </button>
+              <button class="btn-hero-secondary" onclick="window.AptitudeApp.switchView('exams')">
+                📝 Pilih Simulasi Ujian Lengkap
               </button>
             </div>
           </div>
+        </div>
 
-          <!-- W3 KPI Metric Cards -->
-          <div class="w3-kpi-grid">
-            <div class="w3-kpi-card">
-              <div class="w3-kpi-header">
-                <span class="w3-kpi-label">Prediksi SKD CPNS</span>
-                <div class="w3-kpi-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M5 21V10"></path><path d="M19 21V10"></path><path d="M9 21V10"></path><path d="M14 21V10"></path><path d="M2 10l10-7 10 7"></path></svg>
-                </div>
-              </div>
-              <div class="w3-kpi-value" id="metric-cpns-val">-</div>
-              <span class="w3-kpi-badge pass" id="metric-cpns-badge">Passing Grade Target</span>
-            </div>
-
-            <div class="w3-kpi-card">
-              <div class="w3-kpi-header">
-                <span class="w3-kpi-label">Prediksi TOEFL</span>
-                <div class="w3-kpi-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                </div>
-              </div>
-              <div class="w3-kpi-value" id="metric-toefl-val">-</div>
-              <span class="w3-kpi-badge pass" id="metric-toefl-badge">Skala 310 - 677</span>
-            </div>
-
-            <div class="w3-kpi-card">
-              <div class="w3-kpi-header">
-                <span class="w3-kpi-label">Akurasi Rata-rata</span>
-                <div class="w3-kpi-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                </div>
-              </div>
-              <div class="w3-kpi-value" id="metric-acc-val">0%</div>
-              <span class="w3-kpi-badge">Dari seluruh sesi</span>
-            </div>
-
-            <div class="w3-kpi-card">
-              <div class="w3-kpi-header">
-                <span class="w3-kpi-label">Bank Soal Salah</span>
-                <div class="w3-kpi-icon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-                </div>
-              </div>
-              <div class="w3-kpi-value" id="metric-mistakes-val">0</div>
-              <span class="w3-kpi-badge fail">Perlu Perbaikan</span>
-            </div>
-          </div>
-
-          <!-- W3 Signature Example Box ("Try it Yourself »") -->
-          <div class="w3-example">
-            <div class="w3-example-title">
-              <span>Contoh Soal HOTS & Latihan Instan</span>
-              <span style="font-size: 12px; font-weight: normal; color: var(--text-muted);">Standard BKN 2024</span>
-            </div>
-            <div class="w3-example-code">
-              <p><strong>[TIU - Silogisme]</strong> Semua peserta ujian membawa kartu ujian. Beberapa peserta ujian mengenakan kemeja putih.</p>
-              <p style="margin-top: 6px;">
-                A. Semua peserta mengenakan kemeja putih dan membawa kartu ujian.<br>
-                B. Beberapa peserta yang membawa kartu ujian mengenakan kemeja putih.<br>
-                C. Sebagian peserta tidak membawa kartu ujian.<br>
-                D. Peserta yang tidak berkemeja putih tidak boleh mengikuti ujian.
+        <!-- 2. YANG LEMAH AKU APA? (Diagnostik Kelemahan Terkini) -->
+        <div class="section-box weakness-box">
+          <div class="box-header-flex">
+            <div>
+              <div class="badge-tag danger-tag">🎯 DIAGNOSTIK KELEMAHAN</div>
+              <h2 class="section-heading">Yang Lemah Aku Apa?</h2>
+              <p class="section-subheading">
+                Berikut subtopik yang paling sering kamu keliru dan berisiko menggagalkan kelulusanmu:
               </p>
             </div>
-            <button class="w3-btn-try" onclick="window.AptitudeApp.startAdaptiveDrill('TIU')">
-              Try it Yourself »
+            <button class="btn-outline-pill" onclick="window.AptitudeApp.startAdaptiveDrill()">
+              ⚡ Latih Semua Kelemahan
             </button>
           </div>
 
-          <!-- W3 Signature Reference Table (w3-table-all) -->
-          <div style="margin-bottom: 24px;">
-            <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 12px;">Daftar Matriks Materi & Standar Kelulusan</h2>
-            <div class="w3-table-wrap">
-              <table class="w3-table-all">
-                <thead>
-                  <tr>
-                    <th>Subtes / Materi</th>
-                    <th>Kategori</th>
-                    <th>Passing Grade Target</th>
-                    <th>Karakter Soal</th>
-                    <th>Aksi Latihan</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><strong>Pancasila, UUD 1945, Integritas</strong></td>
-                    <td>TWK</td>
-                    <td>Minimal 65 Poin</td>
-                    <td>HOTS Penalaran Kebangsaan</td>
-                    <td><button class="w3-table-btn" onclick="window.AptitudeApp.startAdaptiveDrill('TWK')">Latih TWK »</button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Deret, Silogisme, Figural, Aritmatika</strong></td>
-                    <td>TIU</td>
-                    <td>Minimal 80 Poin</td>
-                    <td>Logika, Kecepatan & Pola</td>
-                    <td><button class="w3-table-btn" onclick="window.AptitudeApp.startAdaptiveDrill('TIU')">Latih TIU »</button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Pelayanan Publik, TIK, Jejaring Kerja</strong></td>
-                    <td>TKP</td>
-                    <td>Minimal 166 Poin</td>
-                    <td>Skor Bobot 1-5 (Tanpa Nilai 0)</td>
-                    <td><button class="w3-table-btn" onclick="window.AptitudeApp.startAdaptiveDrill('TKP')">Latih TKP »</button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Structure & Written Expression</strong></td>
-                    <td>TOEFL ITP</td>
-                    <td>Skor 500+</td>
-                    <td>Inversion, Clauses & Parallelism</td>
-                    <td><button class="w3-table-btn" onclick="window.AptitudeApp.startAdaptiveDrill('Structure')">Latih Structure »</button></td>
-                  </tr>
-                  <tr>
-                    <td><strong>Listening & Reading Comprehension</strong></td>
-                    <td>TOEFL ITP</td>
-                    <td>Skor 500+</td>
-                    <td>Audio Dialogues & Context Vocab</td>
-                    <td><button class="w3-table-btn" onclick="window.AptitudeApp.startAdaptiveDrill('Listening')">Latih Listening »</button></td>
-                  </tr>
-                </tbody>
-              </table>
+          <!-- Grid Kartu Top 3 Kelemahan Kritis -->
+          <div class="weakness-cards-grid" id="top-weakness-cards">
+            <!-- Diisi dinamis via JS -->
+          </div>
+
+          <!-- Footer Tips & Tes Ulang -->
+          <div class="weakness-box-footer">
+            <div class="footer-tip-text">
+              💡 <strong>Tips Efektif:</strong> Kerjakan 5 soal per topik terlemah setiap hari sampai statusnya berubah menjadi hijau ("Menguasai").
+            </div>
+            <button class="btn-text-link" onclick="window.AptitudeApp.startStandardExam('DIAGNOSTIC')">
+              🔄 Tes Diagnostik Kilat (10 Soal)
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. RINGKASAN STATUS KELULUSAN (Mudah Dipahami) -->
+        <div class="status-summary-grid">
+          <!-- Card SKD CPNS -->
+          <div class="summary-card">
+            <div class="summary-card-head">
+              <span class="summary-card-icon">🏛️</span>
+              <div>
+                <div class="summary-card-title">Status SKD CPNS</div>
+                <div class="summary-card-badge" id="cpns-pass-status">Belum Lolos Passing Grade</div>
+              </div>
+            </div>
+            <div class="summary-card-scores" id="cpns-breakdown-scores">
+              <!-- TWK: 50/65 • TIU: 45/80 • TKP: 155/166 -->
             </div>
           </div>
 
-          <!-- Two Column Layout: Evaluasi Subkategori & Ringkasan Kategori -->
-          <div class="w3-two-col">
-            <!-- Kolom Kiri: Evaluasi Subkategori -->
-            <div class="w3-panel-card">
-              <div class="w3-panel-card-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-                Evaluasi Subkategori & Penguasaan
-              </div>
-              <p class="w3-panel-card-desc">Tingkat akurasi spesifik untuk menentukan prioritas belajar.</p>
-              <div class="weakness-list" id="subcat-weakness-list">
-                <!-- Rendered via JS -->
+          <!-- Card TOEFL -->
+          <div class="summary-card">
+            <div class="summary-card-head">
+              <span class="summary-card-icon">🎓</span>
+              <div>
+                <div class="summary-card-title">Prediksi Skor TOEFL</div>
+                <div class="summary-card-badge" id="toefl-pass-status">Skor: - / Target: 550</div>
               </div>
             </div>
-
-            <!-- Kolom Kanan: Ringkasan Kategori -->
-            <div class="w3-panel-card">
-              <div class="w3-panel-card-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                Ringkasan Bidang Ujian
-              </div>
-              <p class="w3-panel-card-desc">Akurasi per bidang ujian CPNS & TOEFL.</p>
-              <div class="cat-breakdown-grid" id="category-gauges-grid">
-                <!-- Rendered via JS -->
-              </div>
+            <div class="summary-card-scores" id="toefl-breakdown-scores">
+              <!-- Listening • Structure • Reading -->
             </div>
           </div>
 
-          <!-- Bottom Pagination -->
-          <div class="w3-page-nav" style="margin-top: 36px;">
-            <button class="w3-btn w3-btn-grey" onclick="window.AptitudeApp.navigatePreviousView()">« Previous</button>
-            <button class="w3-btn w3-btn-green" onclick="window.AptitudeApp.navigateNextView()">Next »</button>
+          <!-- Card Bank Soal Salah -->
+          <div class="summary-card clickable" onclick="window.AptitudeApp.switchView('mistakes')">
+            <div class="summary-card-head">
+              <span class="summary-card-icon">❌</span>
+              <div>
+                <div class="summary-card-title">Bank Soal Salah</div>
+                <div class="summary-card-badge danger" id="mistakes-count-status">0 Soal Perlu Diulang</div>
+              </div>
+            </div>
+            <div class="summary-card-footer">
+              <span class="footer-link">Buka & Catat Evaluasi »</span>
+            </div>
           </div>
-        </section>
+        </div>
+
+      </section>
 
         <!-- ========================================================== -->
         <!-- VIEW 2: SIMULASI UJIAN (CAT CPNS & TOEFL ITP)              -->
@@ -647,9 +517,8 @@
           </div>
         </section>
 
-      </div>
-    </main>
-  </div>
+    </div>
+  </main>
 
   <!-- Modal Konfirmasi Selesai Ujian -->
   <div class="modal-overlay" id="finish-confirm-modal" role="dialog" aria-modal="true" style="display: none;">
@@ -673,6 +542,7 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
+          <span id="modal-material-cat" class="cat-pill" style="margin-bottom: 6px; display: inline-block;">Kategori</span>
           <h2 id="modal-material-title" style="margin-top: 4px; font-size: 20px;">Judul Materi</h2>
         </div>
         <button class="w3-icon-btn" id="modal-close-btn" aria-label="Tutup Modal">✕</button>
@@ -683,7 +553,7 @@
     </div>
   </div>
 
-  <!-- Main ES Module Script -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Main ES Module Script (Cache Buster v4) -->
+  <script type="module" src="js/app.js?v=4"></script>
 </body>
 </html>

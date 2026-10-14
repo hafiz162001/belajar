@@ -8,16 +8,38 @@ import { CPNS_QUESTIONS } from './data/cpnsQuestions.js';
 import { TOEFL_QUESTIONS } from './data/toeflQuestions.js';
 import { STUDY_MATERIALS } from './data/materials.js';
 import { Storage } from './storage.js';
-import { Analytics } from './analytics.js';
+import { Analytics } from './analytics.js?v=4';
 import { AudioPlayer } from './audio.js';
 
 class AppController {
   constructor() {
+    window.AptitudeApp = this;
     this.currentView = "dashboard";
     this.examState = null;
     this.timerInterval = null;
 
     this.init();
+  }
+
+  // Alias agar semua pemanggilan onclick tidak pernah gagal
+  startExam(type) {
+    return this.startStandardExam(type);
+  }
+
+  toggleTheme() {
+    const current = Storage.getPrefs().theme;
+    const next = current === "light" ? "dark" : "light";
+    this.applyTheme(next);
+    Storage.savePrefs({ theme: next });
+  }
+
+  resetData() {
+    if (confirm("Reset seluruh data riwayat ujian dan bank soal salah?")) {
+      Storage.clearAllData();
+      this.ensureInitialSeedData();
+      this.renderDashboard();
+      alert("Data berhasil direset.");
+    }
   }
 
   init() {
@@ -70,8 +92,8 @@ class AppController {
   }
 
   setupNavigation() {
-    // Topnav & Sidenav View Buttons
-    document.querySelectorAll(".w3-topnav-link, .w3-sidenav-link[data-view]").forEach(btn => {
+    // Nav View Buttons (Header & Navigation)
+    document.querySelectorAll(".nav-item[data-view], .w3-topnav-link, .w3-sidenav-link[data-view]").forEach(btn => {
       btn.addEventListener("click", () => {
         const targetView = btn.dataset.view;
         if (targetView) this.switchView(targetView);
@@ -136,16 +158,8 @@ class AppController {
       });
     }
 
-    // Theme toggle button
-    const themeBtn = document.getElementById("theme-toggle-btn");
-    if (themeBtn) {
-      themeBtn.addEventListener("click", () => {
-        const current = Storage.getPrefs().theme;
-        const next = current === "light" ? "dark" : "light";
-        this.applyTheme(next);
-        Storage.savePrefs({ theme: next });
-      });
-    }
+    // Theme toggle button dipanggil via onclick="window.AptitudeApp.toggleTheme()"
+    // Tidak ditambahkan addEventListener ganda di sini untuk mencegah double-trigger
 
     // Modal close
     const modalClose = document.getElementById("modal-close-btn");
@@ -240,11 +254,11 @@ class AppController {
     this.currentView = viewName;
     AudioPlayer.stop();
 
-    // Update Topnav & Sidenav active items
-    document.querySelectorAll(".w3-topnav-link").forEach(btn => {
+    // Update Header Navigation active items
+    document.querySelectorAll(".nav-item[data-view]").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.view === viewName);
     });
-    document.querySelectorAll(".w3-sidenav-link[data-view]").forEach(btn => {
+    document.querySelectorAll(".w3-topnav-link, .w3-sidenav-link[data-view]").forEach(btn => {
       btn.classList.toggle("active", btn.dataset.view === viewName);
     });
 
@@ -293,151 +307,207 @@ class AppController {
       });
     });
 
-    // Reset Data button
-    const resetBtn = document.getElementById("btn-reset-data");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", () => {
-        if (confirm("Reset seluruh data riwayat ujian dan bank soal salah?")) {
-          Storage.clearAllData();
-          this.ensureInitialSeedData();
-          this.renderDashboard();
-          alert("Data berhasil direset.");
-        }
-      });
-    }
+    // Reset Data button dipanggil via onclick="window.AptitudeApp.resetData()"
   }
 
   // ====================================================================
-  // Render: Dashboard & Evaluasi Kelemahan
+  // Render: Dashboard Sederhana (Aku Hari Ini Apa & Kelemahan Saya)
   // ====================================================================
   renderDashboard() {
     const report = Analytics.generateFullReport();
+    const history = Storage.getHistory();
 
-    // 1. Alert Banner Kelemahan
-    const bannerEl = document.getElementById("weakness-alert-banner");
-    const bannerTextEl = document.getElementById("alert-weakness-text");
-
-    if (report.criticalWeaknesses.length > 0) {
-      bannerEl.style.display = "block";
-      const topWeaknesses = report.criticalWeaknesses.slice(0, 3).map(w => 
-        `<span class="tag-highlight" style="background: var(--status-critical-bg); color: var(--status-critical-text); padding: 2px 6px; border-radius: 3px; font-weight: 700;">${w.category}: ${w.subcategory} (${w.accuracy}%)</span>`
-      ).join(" ");
-      bannerTextEl.innerHTML = `Terdeteksi <strong>${report.criticalWeaknesses.length} kelemahan kritis</strong> yang menghambat passing grade Anda: ${topWeaknesses}.`;
-    } else {
-      bannerEl.style.display = "none";
+    // 1. Header Tanggal Hari Ini (Bahasa Indonesia)
+    const todayDateEl = document.getElementById("today-date-text");
+    if (todayDateEl) {
+      const now = new Date();
+      const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+      todayDateEl.textContent = now.toLocaleDateString("id-ID", options);
     }
 
-    // 2. Metrics Cards
-    const mCpnsVal = document.getElementById("metric-cpns-val");
-    const mCpnsBadge = document.getElementById("metric-cpns-badge");
-    const mToeflVal = document.getElementById("metric-toefl-val");
-    const mToeflBadge = document.getElementById("metric-toefl-badge");
-    const mAccVal = document.getElementById("metric-acc-val");
-    const mMistakesVal = document.getElementById("metric-mistakes-val");
-
-    if (report.cpnsEstimation.hasData) {
-      mCpnsVal.textContent = report.cpnsEstimation.totalScore;
-      if (report.cpnsEstimation.isQualified) {
-        mCpnsBadge.className = "badge-tag pass";
-        mCpnsBadge.textContent = "MEMENUHI PG (65/80/166)";
-      } else {
-        mCpnsBadge.className = "badge-tag fail";
-        mCpnsBadge.textContent = "BELUM LOLOS PG";
+    // 2. Hitung Progres Hari Ini (Berapa soal yang dikerjakan hari ini)
+    const todayStr = new Date().toISOString().slice(0, 10);
+    let questionsDoneToday = 0;
+    history.forEach(test => {
+      if (test.date && test.date.slice(0, 10) === todayStr && test.answers) {
+        questionsDoneToday += test.answers.length;
       }
+    });
+
+    const targetQuestions = 10;
+    const progressPct = Math.min(100, Math.round((questionsDoneToday / targetQuestions) * 100));
+
+    const todayProgressRatio = document.getElementById("today-progress-ratio");
+    const todayProgressFill = document.getElementById("today-progress-fill");
+    const todayMissionTitle = document.getElementById("today-mission-title");
+    const todayMissionDesc = document.getElementById("today-mission-desc");
+
+    if (todayProgressRatio) todayProgressRatio.textContent = `${questionsDoneToday} / ${targetQuestions} Soal Selesai`;
+    if (todayProgressFill) todayProgressFill.style.width = `${progressPct}%`;
+
+    // Misi Hari Ini
+    if (questionsDoneToday >= targetQuestions) {
+      if (todayMissionTitle) todayMissionTitle.textContent = `🎉 Target Hari Ini Tercapai! (${questionsDoneToday} Soal)`;
+      if (todayMissionDesc) todayMissionDesc.textContent = `Kerja hebat! Kamu telah menuntaskan target belajarmu hari ini. Mau lanjut latihan ekstra atau perbaiki soal yang masih salah?`;
+    } else if (report.criticalWeaknesses.length > 0) {
+      const topW = report.criticalWeaknesses[0];
+      if (todayMissionTitle) todayMissionTitle.textContent = `Misi Hari Ini: Latih 10 Soal Fokus [${topW.category} - ${topW.subcategory}]`;
+      if (todayMissionDesc) todayMissionDesc.textContent = `Akurasi kamu di topik ${topW.subcategory} saat ini baru ${topW.accuracy}%. Selesaikan 10 soal drill hari ini untuk segera menaikkan skormu!`;
     } else {
-      mCpnsVal.textContent = "-";
-      mCpnsBadge.textContent = "Belum Ada Tes";
+      if (todayMissionTitle) todayMissionTitle.textContent = `Misi Hari Ini: Selesaikan Target 10 Soal Latihan Terarah`;
+      if (todayMissionDesc) todayMissionDesc.textContent = `Asah ketajaman logika dan grammar kamu dengan menyelesaikan 10 soal rekomendasi hari ini.`;
     }
 
-    if (report.toeflEstimation.hasData) {
-      mToeflVal.textContent = report.toeflEstimation.estimatedScore;
-      mToeflBadge.textContent = report.toeflEstimation.estimatedScore >= 550 ? "Target 550+ Tercapai" : "Di Bawah Target";
-      mToeflBadge.className = report.toeflEstimation.estimatedScore >= 550 ? "badge-tag pass" : "badge-tag warning";
-    } else {
-      mToeflVal.textContent = "-";
-      mToeflBadge.textContent = "Belum Ada Tes";
-    }
-
-    mAccVal.textContent = `${report.overallAccuracy}%`;
-    mMistakesVal.textContent = report.mistakeCount;
-
-    // 3. Subcategory Weakness List
-    const weaknessListContainer = document.getElementById("subcat-weakness-list");
-    if (weaknessListContainer) {
-      if (report.subcategoryAnalysis.length === 0) {
-        weaknessListContainer.innerHTML = `<p style="color: var(--text-muted); padding: 16px;">Belum ada data evaluasi. Ikuti tes simulasi atau diagnostic untuk memulai evaluasi!</p>`;
+    // 3. Render Top 3 Kelemahan Kritis ("Yang Lemah Aku Apa?")
+    const weaknessCardsContainer = document.getElementById("top-weakness-cards");
+    if (weaknessCardsContainer) {
+      if (report.criticalWeaknesses.length === 0) {
+        weaknessCardsContainer.innerHTML = `
+          <div class="empty-weakness-box">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🎉</div>
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--status-good);">Belum Ada Kelemahan Kritis Terdeteksi!</h3>
+            <p style="font-size: 14px; color: var(--text-muted); margin: 6px 0 16px 0;">
+              Lakukan tes awal 10 soal untuk memetakan subtopik mana yang paling perlu kamu latih.
+            </p>
+            <button class="btn-hero-primary" style="margin: 0 auto;" onclick="window.AptitudeApp.startStandardExam('DIAGNOSTIC')">
+              ⚡ Mulai Tes Diagnostik Kilat (10 Soal)
+            </button>
+          </div>
+        `;
       } else {
-        weaknessListContainer.innerHTML = report.subcategoryAnalysis.map(item => `
-          <div class="weakness-item-card">
-            <div class="subcat-meta">
-              <div class="subcat-title-row">
-                <span class="cat-pill">${item.category}</span>
-                <span class="subcat-name">${item.subcategory}</span>
-                <span class="badge-tag ${item.statusClass === 'critical' ? 'fail' : (item.statusClass === 'warning' ? 'warning' : 'pass')}">${item.status}</span>
+        const pitfallTips = {
+          "Silogisme": "Sering keliru penarikan kesimpulan 'Semua' vs 'Beberapa' dan pola implikasi jika-maka.",
+          "Deret Angka": "Perhatikan pola lompat 2 angka dan deret selisih kuadrat/pangkat.",
+          "UUD 1945": "Perkuat pasal-pasal amandemen UUD 1945, HAM (28A-J), dan pembagian wewenang lembaga.",
+          "Pancasila": "Cermati butir pengamalan Sila ke-2 (kemanusiaan) vs Sila ke-5 (keadilan sosial/gotong royong).",
+          "Inversion": "Perhatikan susunan Auxiliary + Subject setelah penanda negatif awal kalimat (Not only, Seldom, Never).",
+          "Reduced Relative Clauses": "Bedakan kata kerja aktif (-ing) vs pasif (-ed/V3) pada klausa yang disederhanakan.",
+          "Subject-Verb Agreement": "Hati-hati subjek yang disela frasa preposisi (along with, as well as, of).",
+          "Short Dialogue (Part A)": "Fokus pada pembicara kedua, cari frasa parafrase / sinonim, dan hindari kata berbunyi mirip.",
+          "Pelayanan Publik": "Pilih jawaban berjiwa ASN yang tulus melayani tanpa pamrih dan memprioritaskan warga."
+        };
+
+        const topThree = report.criticalWeaknesses.slice(0, 3);
+        weaknessCardsContainer.innerHTML = topThree.map((w, idx) => {
+          const tip = pitfallTips[w.subcategory] || "Latih kembali konsep dasar dan tipe soal HOTS subtopik ini secara bertahap.";
+          const isExtreme = w.accuracy < 50;
+          return `
+            <div class="weakness-spotlight-card ${isExtreme ? 'critical-border' : 'warning-border'}">
+              <div class="spotlight-header">
+                <div class="spotlight-title-group">
+                  <span class="spotlight-rank">#${idx + 1}</span>
+                  <span class="cat-pill">${w.category}</span>
+                  <span class="spotlight-subcat">${w.subcategory}</span>
+                </div>
+                <span class="badge-tag ${isExtreme ? 'fail' : 'warning'}">
+                  ${isExtreme ? '🔴 Kritis' : '🟡 Perlu Latihan'}
+                </span>
               </div>
-              <div class="progress-bar-bg">
-                <div class="progress-bar-fill ${item.statusClass}" style="width: ${item.accuracy}%"></div>
+
+              <!-- Bar Akurasi -->
+              <div class="spotlight-meter-wrap">
+                <div class="meter-info-row">
+                  <span class="meter-label">Tingkat Penguasaan:</span>
+                  <span class="meter-score ${isExtreme ? 'text-danger' : 'text-warning'}">
+                    ${w.accuracy}% (${w.correct}/${w.total} Benar)
+                  </span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-fill ${isExtreme ? 'fill-danger' : 'fill-warning'}" style="width: ${Math.max(8, w.accuracy)}%;"></div>
+                </div>
               </div>
-            </div>
-            <div class="subcat-stats-row">
-              <div>
-                <div class="accuracy-num ${item.statusClass}">${item.accuracy}%</div>
-                <div style="font-size: 0.72rem; color: var(--text-muted);">${item.correct}/${item.total} Benar</div>
-              </div>
-              <button class="btn-drill-single" data-subcat="${item.subcategory}" data-category="${item.category}">
-                Latih Ini
+
+              <p class="spotlight-tip">
+                🔍 <strong>Masalah Umum:</strong> ${tip}
+              </p>
+
+              <button class="btn-spotlight-drill" data-subcat="${w.subcategory}" data-category="${w.category}">
+                ⚡ Latih ${w.subcategory} (5 Menit) »
               </button>
             </div>
-          </div>
-        `).join("");
+          `;
+        }).join("");
 
-        // Event listener drill satuan
-        weaknessListContainer.querySelectorAll(".btn-drill-single").forEach(b => {
-          b.addEventListener("click", () => {
-            this.startDrillForSubcategory(b.dataset.subcat, b.dataset.category);
+        // Bind drill buttons
+        weaknessCardsContainer.querySelectorAll(".btn-spotlight-drill").forEach(btn => {
+          btn.addEventListener("click", () => {
+            this.startDrillForSubcategory(btn.dataset.subcat, btn.dataset.category);
           });
         });
       }
     }
 
-    // 4. Category Breakdown Radial Gauges
-    const catGaugesContainer = document.getElementById("category-gauges-grid");
-    if (catGaugesContainer) {
-      const cats = [
-        { name: "TWK", benchmark: "PG 65" },
-        { name: "TIU", benchmark: "PG 80" },
-        { name: "TKP", benchmark: "PG 166" },
-        { name: "Listening", benchmark: "Sec. 1" },
-        { name: "Structure", benchmark: "Sec. 2" },
-        { name: "Reading", benchmark: "Sec. 3" }
-      ];
-      catGaugesContainer.innerHTML = cats.map(item => {
-        const c = item.name;
-        const stat = report.categoryStats[c];
-        const acc = stat && stat.total > 0 ? Math.round((stat.correct / stat.total) * 100) : 0;
-        const color = acc < 50 ? 'var(--status-critical)' : (acc < 75 ? 'var(--status-warning)' : 'var(--status-good)');
-        return `
-          <div class="cat-box">
-            <div class="cat-box-header">
-              <h4>${c}</h4>
-              <span class="cat-benchmark-tag">${item.benchmark}</span>
-            </div>
-            <div class="cat-gauge-wrap">
-              <svg class="radial-gauge" viewBox="0 0 36 36">
-                <path class="gauge-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                <path class="gauge-bar" stroke-dasharray="${acc}, 100" style="stroke: ${color};" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-              </svg>
-              <div class="cat-gauge-val" style="color: ${color};">
-                ${stat && stat.total > 0 ? `${acc}%` : '0%'}
-              </div>
-            </div>
-            <div class="cat-box-footer">
-              ${stat && stat.total > 0 ? `${stat.correct}/${stat.total} Benar` : '0 Soal'}
-            </div>
-          </div>
+    // 4. Ringkasan Status Kelulusan (Mudah Dipahami)
+    const cpnsStatusEl = document.getElementById("cpns-pass-status");
+    const cpnsBreakdownEl = document.getElementById("cpns-breakdown-scores");
+    if (report.cpnsEstimation.hasData) {
+      const e = report.cpnsEstimation;
+      if (cpnsStatusEl) {
+        cpnsStatusEl.textContent = e.isQualified ? "Lolos Passing Grade 🎉" : "Belum Lolos Passing Grade ⚠️";
+        cpnsStatusEl.className = `summary-card-badge ${e.isQualified ? 'pass' : 'danger'}`;
+      }
+      if (cpnsBreakdownEl) {
+        cpnsBreakdownEl.innerHTML = `
+          <span>TWK: <strong>${e.twkScore}/65</strong> ${e.passedTwk ? '✅' : '❌'}</span>
+          <span>TIU: <strong>${e.tiuScore}/80</strong> ${e.passedTiu ? '✅' : '❌'}</span>
+          <span>TKP: <strong>${e.tkpScore}/166</strong> ${e.passedTkp ? '✅' : '❌'}</span>
         `;
-      }).join("");
+      }
+    } else {
+      if (cpnsStatusEl) cpnsStatusEl.textContent = "Belum Ada Riwayat Tes";
+      if (cpnsBreakdownEl) cpnsBreakdownEl.innerHTML = `<span>Ikuti tes simulasi CAT untuk memprediksi kelulusanmu.</span>`;
     }
+
+    const toeflStatusEl = document.getElementById("toefl-pass-status");
+    const toeflBreakdownEl = document.getElementById("toefl-breakdown-scores");
+    if (report.toeflEstimation.hasData) {
+      const t = report.toeflEstimation;
+      const isTargetMet = t.estimatedScore >= 550;
+      if (toeflStatusEl) {
+        toeflStatusEl.textContent = `Prediksi: ${t.estimatedScore} / Target: 550`;
+        toeflStatusEl.className = `summary-card-badge ${isTargetMet ? 'pass' : 'warning'}`;
+      }
+      if (toeflBreakdownEl) {
+        toeflBreakdownEl.innerHTML = `
+          <span>Listening: <strong>${t.listeningScaled}</strong></span>
+          <span>Structure: <strong>${t.structureScaled}</strong></span>
+          <span>Reading: <strong>${t.readingScaled}</strong></span>
+        `;
+      }
+    } else {
+      if (toeflStatusEl) toeflStatusEl.textContent = "Belum Ada Riwayat Tes";
+      if (toeflBreakdownEl) toeflBreakdownEl.innerHTML = `<span>Ikuti tes simulasi TOEFL ITP untuk estimasi skor.</span>`;
+    }
+
+    const mistakesStatusEl = document.getElementById("mistakes-count-status");
+    if (mistakesStatusEl) {
+      mistakesStatusEl.textContent = `${report.mistakeCount} Soal Perlu Diulang`;
+      mistakesStatusEl.className = `summary-card-badge ${report.mistakeCount > 0 ? 'danger' : 'pass'}`;
+    }
+  }
+
+  // Mulai Misi Hari Ini (Otomatis ambil topik terlemah)
+  startTodayMission() {
+    const report = Analytics.generateFullReport();
+    let topic = null;
+    if (report.criticalWeaknesses && report.criticalWeaknesses.length > 0) {
+      topic = report.criticalWeaknesses[0].subcategory;
+    }
+    let questions = Analytics.generateAdaptiveDrill(topic);
+    if (!questions || questions.length === 0) {
+      questions = Analytics.generateAdaptiveDrill();
+    }
+    if (!questions || questions.length === 0) {
+      questions = [...CPNS_QUESTIONS, ...TOEFL_QUESTIONS].slice(0, 10);
+    }
+
+    this.initExamSession({
+      examType: "DRILL",
+      title: `🎯 Misi Hari Ini: ${topic ? 'Fokus ' + topic : 'Penguatan Kelemahan'}`,
+      questions: questions.slice(0, 10),
+      durationSeconds: 15 * 60,
+      isInstantFeedback: true
+    });
   }
 
   // ====================================================================
@@ -641,11 +711,11 @@ class AppController {
     const contentEl = document.getElementById("modal-material-content");
 
     if (!modal) return;
-    titleEl.textContent = item.title;
-    catEl.textContent = `${item.category} • ${item.badge}`;
+    if (titleEl) titleEl.textContent = item.title;
+    if (catEl) catEl.textContent = `${item.category} • ${item.badge}`;
 
     // Format simple markdown into HTML
-    const formattedHtml = item.content
+    const formattedHtml = (item.content || "")
       .replace(/^### (.*$)/gim, '<h3>$1</h3>')
       .replace(/^\- (.*$)/gim, '<li>$1</li>')
       .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
@@ -653,7 +723,7 @@ class AppController {
       .replace(/`([^`]+)`/gim, '<code>$1</code>')
       .replace(/\n\n/gim, '<br><br>');
 
-    contentEl.innerHTML = formattedHtml;
+    if (contentEl) contentEl.innerHTML = formattedHtml;
     modal.style.display = "flex";
   }
 
@@ -1446,7 +1516,15 @@ class AppController {
   }
 }
 
-// Inisialisasi saat DOM siap
-document.addEventListener("DOMContentLoaded", () => {
-  window.AptitudeApp = new AppController();
-});
+// Inisialisasi otomatis & aman (bekerja baik sebelum maupun sesudah DOMContentLoaded)
+function launchAptitudeApp() {
+  if (!window.AptitudeApp || !(window.AptitudeApp instanceof AppController)) {
+    window.AptitudeApp = new AppController();
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", launchAptitudeApp);
+} else {
+  launchAptitudeApp();
+}
